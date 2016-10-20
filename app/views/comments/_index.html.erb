@@ -1,0 +1,20 @@
+<ul>
+  <% comments.each do |comment| %>
+    <% unless comment.id.nil? %>
+     <% if comment.topic_id == id then %>
+      <li>
+        <p class="left"><%= comment.user.name %>さんがコメントしました。</p>
+        <p class="left"><%= comment.content %></p>
+        <% if current_user.id == comment.user.id %>
+          <p class="right">
+            <% if current_user.id == comment.user_id %>
+              <%= link_to "編集", edit_comment_path(comment.id), class: 'btn btn-default btn-sm btn-success' %>
+              <%= link_to "削除", comment_path(comment.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
+            <% end %>
+          </p>
+        <% end %>
+      </li>
+      <% end %>
+    <% end %>
+  <% end %>
+</ul>

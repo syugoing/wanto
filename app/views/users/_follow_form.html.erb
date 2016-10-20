@@ -1,0 +1,16 @@
+<div id="follow_form_<%= user.id %>">
+  <% if !(current_user.following?(user)) %>
+    <%= form_for(current_user.relationships.build(followed_id: user.id), remote: true) do |f| %>
+      <%= f.hidden_field :followed_id %>
+      <%= f.submit "友達申請", class: "btn btn-large btn-primary" %>
+    <% end %>
+    <% elsif user.following?(current_user) then%>
+    <%= form_for(current_user.relationships.find_by(followed_id: user.id), html: { method: :delete }, remote: true) do |f| %>
+      <%= f.submit "つながりを解除", class: "btn btn-large" %>
+    <% end %>
+    <%else%>
+    <%= form_for(current_user.relationships.find_by(followed_id: user.id), html: { method: :delete }, remote: true) do |f| %>
+    <%= f.submit "申請を取り消し", class: "btn btn-large" %>
+    <% end %>
+  <% end %>
+</div>

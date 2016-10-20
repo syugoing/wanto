@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <div class="wrapper col-sx-11">
+    <p class="flash"><%= notice %><%= alert %></p>
+
+    <div class="row">
+      <div class="col-xs-7">
+        <h1>投稿一覧</h1>
+        <%= link_to "投稿する", new_topic_path, class: 'btn btn-default' %>
+        <% @topics.reverse.each do |topic| %>
+          <% if (current_user.following?(topic.user) && topic.user.following?(current_user)) || topic.user == current_user then %>
+            <div class="row topic">
+              <p class="icon"><%= profile_img(topic.user) if profile_img(topic.user) %></p>
+              <div style="display:inline;">&nbsp;&nbsp;&nbsp;<%= topic.user.name %>さんが <%=topic.updated_at.strftime("%Y-%m-%d %H:%M")%> に投稿しました。</div>
+              <p><strong><%= topic.content.truncate(33)%></strong></p>
+              <% if topic.picture.url != nil then%>
+                <%= send_img(topic) %></br>
+              <%end%>
+              <%= link_to "詳細", topic_path(topic.id), class: 'btn btn-default btn-sm btn-success' %>
+              <% if current_user.id == topic.user_id %>
+                <%= link_to "編集", edit_topic_path(topic.id), class: 'btn btn-default btn-sm btn-success' %>
+                <%= link_to "削除", topic_path(topic.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
+              <% end %>
+              <HR width="100%">
+              <p>コメント一覧</p>
+              <% @topic_id = topic.id%>
+              <div id="comments_area_<%= topic.id %>">
+                <%= render partial: 'comments/index', locals: { comments: @comments, topic: @topic, id: @topic_id } %>
+              </div>
+              <%= render partial: 'comments/form', locals: { comment: @comment, id: @id} %>
+            </div>
+          <%end%>
+        <% end %>
+      </div>
+
+      <div class="col-xs-offset-1 col-xs-4 friend">
+        <h2>友達</h2>
+        <% @users.each do |user| %>
+            <div class="container-child">
+              <% if user.id != current_user.id && current_user.following?(user) then%>
+                    <div class="item">
+                      <p class="icon"><%= profile_img(user) %></p>
+                      <%= link_to user.name, user %>
+                      <% if current_user.following?(user) && user.following?(current_user) then %>
+                      <%= link_to 'メッセージ', conversations_path(sender_id: current_user.id, recipient_id: user.id), method: 'post', class: 'btn btn-default btn-sm btn-success'%>
+                      <% end %>
+                  </div>
+              <% end %>
+            </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

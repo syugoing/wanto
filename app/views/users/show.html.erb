@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="wrapper col-md-8 col-md-offset-2 col-sm-10">
+    <h2>ユーザー詳細</h2>
+    <p id="notice"><%= notice %></p>
+
+      <div class="child row">
+        <div class="wrapper col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+          <div class="user-text">
+            <%= profile_img(@user) if profile_img(@user) %>
+            <h3 style="display:inline;"><strong>&nbsp;&nbsp;&nbsp;name:&nbsp;&nbsp;<%= @user.name  %></strong></h3>
+            <div class="row">
+              <div class="col-xs-6"><h4>フォロー数:&nbsp;<%= @user.followed_users.count  %></h4>
+                <% @user.followed_users.each do |user| %>
+                <%= render 'follow_user', user: user  %>
+                <% end %>
+              </div>
+              <div class="col-xs-6"><h4>フォロワー数：&nbsp;<%= @user.followers.count  %></h4>
+                <% @user.followers.each do |user| %>
+                <%= render 'follow_user', user: user  %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    <%= link_to "ユーザー一覧画面にもどる", users_path %>
+
+  </div>
+</div>

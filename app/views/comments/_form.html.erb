@@ -1,0 +1,11 @@
+<%= form_for(@comment, remote: true) do |f| %>
+  <%= f.error_messages! %>
+  <div class="field">
+    <%= f.hidden_field :topic_id, :value => @topic_id  %>
+    <%= f.text_field :content, placeholder: "内容", class: "form-control"  %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+
+  </div>
+<% end %>

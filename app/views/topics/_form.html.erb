@@ -1,0 +1,15 @@
+<%= form_for(@topic, url: choose_new_or_edit) do |f| %>
+<%= f.error_messages! %>
+
+  <%= f.label :content %>
+  <%= f.text_area :content, class: 'form-control' %>
+  <br>
+  <div class="field">
+    <%= f.file_field :picture %>
+    <%= f.hidden_field :picture_cache %>
+  </div><br>
+
+  <%= f.submit '投稿', class: 'btn btn-primary btn-block' %>
+<% end %>
+
+<%= link_to "投稿一覧画面にもどる", topics_path %>
